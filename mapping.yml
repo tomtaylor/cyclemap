@@ -1,0 +1,58 @@
+tables:
+  route_relations:
+    type: relation
+    relation_types: [route]
+    mapping:
+      route: [bicycle]
+    columns:
+      - name: osm_id
+        type: id
+      - name: name
+        type: string
+        key: name
+      - name: network
+        type: string
+        key: network
+      - name: ref
+        type: string
+        key: ref
+
+  route_members:
+    type: relation_member
+    relation_types: [route]
+    mapping:
+      route: [bicycle]
+    columns:
+      - name: osm_id
+        type: id
+      - name: member
+        type: member_id
+      - name: index
+        type: member_index
+      - name: role
+        type: member_role
+      - name: oneway
+        type: bool
+        key: oneway
+        from_member: true
+      - name: geometry
+        type: geometry
+
+  highways:
+    type: linestring
+    mapping:
+      highway: [cycleway, footway]
+    columns:
+      - name: osm_id
+        type: id
+      - name: geometry
+        type: geometry
+      - name: highway
+        type: string
+        key: highway
+      - name: bicycle
+        type: bool
+        key: bicycle
+      - name: cycleway
+        type: string
+        key: cycleway
