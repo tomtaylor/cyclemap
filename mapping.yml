@@ -1,7 +1,7 @@
 tables:
   route_relations:
     type: relation
-    relation_types: [route]
+    relation_types: [route, master_route]
     mapping:
       route: [bicycle]
     columns:
@@ -19,7 +19,7 @@ tables:
 
   route_members:
     type: relation_member
-    relation_types: [route]
+    relation_types: [route, master_route]
     mapping:
       route: [bicycle]
     columns:
