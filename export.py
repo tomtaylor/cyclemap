@@ -4,6 +4,8 @@ import psycopg2.extras
 import geojson
 from geojson import Feature, FeatureCollection, GeometryCollection
 import itertools
+from shapely.geometry import shape
+from shapely.ops import linemerge
 
 DB_NAME = "cyclemap_osm"
 DB_USER = "tom"
@@ -28,19 +30,20 @@ def main():
 
     for osm_id, group in itertools.groupby(cursor, lambda x: x["osm_id"]):
 
-        def record_to_geometry(record):
-            return geojson.loads(record["geojson"])
+        def record_to_shape(record):
+            return shape(geojson.loads(record["geojson"]))
 
         records = list(group)
 
         if len(records) == 0:
             continue
 
-        geometries = list(map(record_to_geometry, records))
+        shapes = list(map(record_to_shape, records))
 
-        collection = GeometryCollection(geometries=geometries)
+        multilinestring = linemerge(shapes)
+
         id = "osm:relation:{}".format(-osm_id)
-        feature = Feature(id=id, geometry=collection)
+        feature = Feature(id=id, geometry=multilinestring)
 
         first_record = records[0]
         name = first_record["name"]
