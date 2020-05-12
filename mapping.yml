@@ -31,6 +31,8 @@ tables:
         type: member_index
       - name: role
         type: member_role
+      - name: type
+        type: member_type
       - name: oneway
         type: bool
         key: oneway

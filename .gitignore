@@ -1,2 +1,5 @@
 *.json
+*.geojson
 *.pbf
+.dbtimestamp
+*.mbtiles
