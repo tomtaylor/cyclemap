@@ -6,7 +6,7 @@ dbname := cyclemap_osm
 all: routes.mbtiles
 
 routes.mbtiles: routes.geojson
-	tippecanoe -o $@ --force routes.geojson
+	tippecanoe -o $@ -P -S 3 --force -l routes --drop-densest-as-needed -z14 routes.geojson
 
 routes.mbtiles: routes.geojson
 
