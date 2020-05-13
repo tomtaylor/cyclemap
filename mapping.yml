@@ -40,6 +40,52 @@ tables:
       - name: geometry
         type: geometry
 
+  # We include ferry relations + members and ferry ways so we can exclude them
+  # from the routes later on
+  ferry_relations:
+    type: relation
+    relation_types: [route, master_route]
+    mapping:
+      route: [ferry]
+    columns:
+      - name: osm_id
+        type: id
+      - name: name
+        type: string
+        key: name
+
+  ferry_members:
+    type: relation_member
+    relation_types: [route, master_route]
+    mapping:
+      route: [ferry]
+    columns:
+      - name: osm_id
+        type: id
+      - name: member
+        type: member_id
+      - name: index
+        type: member_index
+      - name: role
+        type: member_role
+      - name: type
+        type: member_type
+      - name: geometry
+        type: geometry
+
+  ferry_ways:
+    type: linestring
+    mapping:
+      route: [ferry]
+    columns:
+      - name: osm_id
+        type: id
+      - name: geometry
+        type: geometry
+      - name: bicycle
+        type: bool
+        key: bicycle
+
   highways:
     type: linestring
     mapping:

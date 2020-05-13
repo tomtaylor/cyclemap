@@ -3,22 +3,22 @@ SELECT
     rr.name,
     rr.ref,
     rr.network,
-    CASE
-        WHEN network = 'ncn' THEN 'national'
-        WHEN ref ~ '^C[0-9]+' THEN 'london-cycleway'
-        WHEN name ILIKE '%cycleway%' THEN 'london-cycleway'
-        WHEN ref ~ '^CS[0-9]+' THEN 'london-superhighway'
-        WHEN ref ~ '^Q[0-9]+' THEN 'london-quietway'
-        WHEN name ILIKE '%quietway%' THEN 'london-quietway'
-        WHEN network = 'icn' THEN 'international'
-        ELSE 'other'
-    END AS route_type,
-    ST_LineMerge(ST_Collect(geometry ORDER BY rm.index)) AS geometry
+    ST_LineMerge(
+        ST_Collect(
+            rm.geometry
+            ORDER BY
+                rm.index
+        )
+    ) AS geometry
 FROM
     osm_route_relations rr
     INNER JOIN osm_route_members rm ON rm.osm_id = rr.osm_id
+    LEFT JOIN osm_ferry_members fm ON fm.member = rm.member
+    LEFT JOIN osm_ferry_ways fw ON fw.osm_id = rm.member
 WHERE
-    type = 1
+    rm.type = 1
+    AND fm.id IS NULL
+    AND fw.id IS NULL
 GROUP BY
     rr.osm_id,
     rr.name,
