@@ -20,10 +20,10 @@ routes.geojson: query.sql .dbtimestamp
 	imposm import -connection postgis://tom@localhost/$(dbname) -mapping mapping.yml -write -deployproduction
 	touch .dbtimestamp
 
-.PHONY: great-britain-latest.osm.pbf
-great-britain-latest.osm.pbf:
-	wget -N http://download.geofabrik.de/europe/great-britain-latest.osm.pbf
+great-britain-latest.osm.pbf: download
+ireland-and-northern-ireland-latest.osm.pbf: download
 
-.PHONY: ireland-and-northern-ireland-latest.osm.pbf
-ireland-and-northern-ireland-latest.osm.pbf:
+.PHONY: download
+download:
+	wget -N http://download.geofabrik.de/europe/great-britain-latest.osm.pbf
 	wget -N http://download.geofabrik.de/europe/ireland-and-northern-ireland-latest.osm.pbf
