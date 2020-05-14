@@ -4,9 +4,9 @@ A collection of tooling for building vector data and tiles of UK cycle networks 
 
 ## Setup
 
-Install postgres, postgis, imposm and ogr2ogr.
+Install postgres, postgis, imposm, ogr2ogr and tippecanoe.
 
-Run `make` to spool through the build tasks and hopefully spit out `routes.geojson` at the end of it.
+Run `make` to spool through the build tasks and hopefully spit out `routes.mbtiles` at the end of it.
 
 # Notes to self
 
