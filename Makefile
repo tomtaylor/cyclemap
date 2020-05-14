@@ -11,8 +11,7 @@ routes.mbtiles: routes.geojson
 routes.mbtiles: routes.geojson
 
 routes.geojson: query.sql .dbtimestamp
-	rm routes.geojson || true
-	ogr2ogr -f GeoJSONSeq routes.geojson -overwrite "PG:host=localhost dbname=$(dbname)"  -sql @query.sql -t_srs EPSG:4326
+	ogr2ogr -f GeoJSONSeq routes.geojson -overwrite "PG:host=localhost dbname=$(dbname)" -sql @query.sql -t_srs EPSG:4326
 
 .dbtimestamp: great-britain-latest.osm.pbf ireland-and-northern-ireland-latest.osm.pbf mapping.yml
 	(psql -U postgres -tc "SELECT 1 FROM pg_database WHERE datname = '$(dbname)'" | grep -q 1) || (createdb $(dbname) && psql -d $(dbname) -c "CREATE EXTENSION postgis; CREATE EXTENSION hstore;")
