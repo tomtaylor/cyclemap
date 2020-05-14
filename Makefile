@@ -14,10 +14,17 @@ routes.geojson: query.sql .dbtimestamp
 	rm routes.geojson || true
 	ogr2ogr -f GeoJSONSeq routes.geojson -overwrite "PG:host=localhost dbname=$(dbname)"  -sql @query.sql -t_srs EPSG:4326
 
-.dbtimestamp: great-britain-latest.osm.pbf mapping.yml
+.dbtimestamp: great-britain-latest.osm.pbf ireland-and-northern-ireland-latest.osm.pbf mapping.yml
 	(psql -U postgres -tc "SELECT 1 FROM pg_database WHERE datname = '$(dbname)'" | grep -q 1) || (createdb $(dbname) && psql -d $(dbname) -c "CREATE EXTENSION postgis; CREATE EXTENSION hstore;")
-	imposm import -connection postgis://tom@localhost/$(dbname) -read great-britain-latest.osm.pbf -mapping mapping.yml -overwritecache -write -deployproduction
+	imposm import -read great-britain-latest.osm.pbf -mapping mapping.yml -overwritecache
+	imposm import -read ireland-and-northern-ireland-latest.osm.pbf -mapping mapping.yml -appendcache
+	imposm import -connection postgis://tom@localhost/$(dbname) -mapping mapping.yml -write -deployproduction
 	touch .dbtimestamp
 
+.PHONY: great-britain-latest.osm.pbf
 great-britain-latest.osm.pbf:
 	wget -N http://download.geofabrik.de/europe/great-britain-latest.osm.pbf
+
+.PHONY: ireland-and-northern-ireland-latest.osm.pbf
+ireland-and-northern-ireland-latest.osm.pbf:
+	wget -N http://download.geofabrik.de/europe/ireland-and-northern-ireland-latest.osm.pbf
