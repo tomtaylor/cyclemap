@@ -9,6 +9,10 @@ all: routes.mbtiles
 preview:
 	mbview routes.mbtiles
 
+.PHONY: upload
+upload: routes.mbtiles
+	mapbox upload tomtaylor.8efgkmxv --name "Cycle Network" routes.mbtiles
+
 routes.mbtiles: routes.geojson
 	tippecanoe -o $@ -P -S 3 --force -l routes --drop-densest-as-needed -z14 routes.geojson
 
