@@ -11,7 +11,8 @@ SELECT
             ORDER BY
                 rm.index
         )
-    ) AS geometry
+    ) AS geometry,
+    ROUND(SUM(ST_Length(rm.geometry))) AS length
 FROM
     osm_route_relations rr
     INNER JOIN osm_route_members rm ON rm.osm_id = rr.osm_id
