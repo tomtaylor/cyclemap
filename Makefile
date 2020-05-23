@@ -5,6 +5,10 @@ dbname := cyclemap_osm
 .PHONY: all
 all: routes.mbtiles
 
+.PHONY: preview
+preview:
+	mbview routes.mbtiles
+
 routes.mbtiles: routes.geojson
 	tippecanoe -o $@ -P -S 3 --force -l routes --drop-densest-as-needed -z14 routes.geojson
 
