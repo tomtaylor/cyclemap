@@ -38,10 +38,13 @@ routes.geojson: query.sql .dbtimestamp
 	imposm import -connection postgis://tom@localhost/$(DBNAME) -mapping mapping.yml -write -deployproduction
 	touch .dbtimestamp
 
-.PHONY: download
-download: $(OSM_PATHS)
+.PHONY: osm-downloads
+osm-downloads: $(OSM_PATHS)
 
-.PHONY: $(OSM_PATHS)
 $(OSM_PATHS):
 	mkdir -p $(dir $@)
-	curl -z $@ -o $@ https://download.geofabrik.de/$(subst osm/,,$@)
+	curl -o $@ https://download.geofabrik.de/$(subst osm/,,$@)
+
+.PHONY: clean-osm-downloads
+clean-osm-downloads:
+	rm -r osm
