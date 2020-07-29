@@ -18,8 +18,6 @@ upload: routes.mbtiles
 routes.mbtiles: routes.geojson
 	tippecanoe -o $@ -P -S 3 --force -l routes --drop-densest-as-needed -z14 routes.geojson
 
-routes.mbtiles: routes.geojson
-
 routes.geojson: query.sql .dbtimestamp
 	rm routes.geojson || true
 	ogr2ogr -f GeoJSONSeq routes.geojson "PG:host=localhost dbname=$(DBNAME)" -sql @query.sql -t_srs EPSG:4326
