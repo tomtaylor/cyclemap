@@ -1,6 +1,6 @@
 # UK & Ireland Cyclemap Data
 
-A collection of tooling for building vector data and tiles of UK and Irish cycle networks from OpenStreetMap data. 
+A collection of tooling for building vector data and tiles of UK, US, IE, AU, CA and NZ cycle networks from OpenStreetMap data. 
 
 ## Setup
 
